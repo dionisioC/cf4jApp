@@ -2,3 +2,5 @@ GET http://localhost:8080/recommendations/itemknncomparison?algorithm=ADJUSTEDCO
 Accept: application/json
 
 ###
+GET http://localhost:8080/recommendations/matrixfactorization?algorithm=BEMF&numFactors=10&numIterations=10&randomSeed=43
+Accept: application/json

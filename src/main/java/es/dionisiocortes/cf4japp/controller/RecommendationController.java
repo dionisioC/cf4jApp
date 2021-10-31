@@ -23,7 +23,7 @@ public class RecommendationController {
     }
 
     @GetMapping("/matrixfactorization")
-    public Collection<Result> getMatrixFactorization(@RequestParam String algorithm, @RequestParam Integer numFactors, @RequestParam Integer numIterations, @RequestParam Integer randomSeed) {
+    public Result getMatrixFactorization(@RequestParam String algorithm, @RequestParam Integer numFactors, @RequestParam Integer numIterations, @RequestParam Integer randomSeed) {
         return matrixFactorizationService.getFactorization(algorithm, numFactors, numIterations, randomSeed);
     }
 
