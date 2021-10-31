@@ -1,0 +1,4 @@
+GET http://localhost:8080/recommendations/itemknncomparison?algorithm=ADJUSTEDCOSINE&numNeighbors=1000&aggregationApproach=mean
+Accept: application/json
+
+###
