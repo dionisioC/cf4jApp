@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>es.dionisiocortes</groupId>
-    <artifactId>cf4jApp</artifactId>
+    <artifactId>cf4japp</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>cf4jApp</name>
     <description>cf4jApp</description>
@@ -41,6 +41,15 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <image>
+                        <builder>paketobuildpacks/builder:base</builder>
+                        <name>docker.io/dionisioc/${project.artifactId}:${project.version}</name>
+                    </image>
+                    <layers>
+                        <enabled>true</enabled>
+                    </layers>
+                </configuration>
             </plugin>
         </plugins>
     </build>
