@@ -44,7 +44,7 @@
                 <configuration>
                     <image>
                         <builder>paketobuildpacks/builder:base</builder>
-                        <name>docker.io/dionisioc/${project.artifactId}:${project.version}</name>
+                        <name>dionisioc/${project.artifactId}:${project.version}</name>
                     </image>
                     <layers>
                         <enabled>true</enabled>
