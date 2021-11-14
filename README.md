@@ -1,9 +1,8 @@
 # cf4jApp
 
-cf4j Example app with spring
+This is a springboot 2.5.6 app with java 17 that uses [cf4j](https://github.com/ferortega/cf4j) library
 
-
-## Sync the fork
+## Sync the original fork 
 
 Check the remotes.
 
@@ -73,3 +72,40 @@ Auto-merging pom.xml
 Automatic merge failed; fix conflicts and then commit the result.
 ```
 
+## Create the Google cloud cluster
+
+First we initialize the gcloud app
+
+```bash
+gcloud init
+```
+Once we have all initialized, we need to grant permission to container.googleapis.com with:
+
+```bash
+gcloud services enable container.googleapis.com
+```
+
+We create a cluster with 3 to 10 nodes with:
+
+```bash
+gcloud container clusters create gke-load-test \
+--zone us-central1-b \
+--scopes "https://www.googleapis.com/auth/cloud-platform" \
+--enable-autoscaling --min-nodes "3" --max-nodes "10" \
+--scopes=logging-write,storage-ro \
+--addons HorizontalPodAutoscaling,HttpLoadBalancing
+```
+
+We config our local kubectl with:
+
+```bash
+gcloud container clusters get-credentials gke-load-test \                                                                                     
+--zone us-central1-b \
+--project tfmurjc-331614
+```
+
+We add the locust image to the Google registry:
+
+```bash
+gcloud builds submit --tag gcr.io/tfmurjc-331614/locust-tasks:latest locust-image
+```

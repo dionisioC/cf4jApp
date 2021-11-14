@@ -1,0 +1,39 @@
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: cf4j-app
+  labels:
+    name: cf4j-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cf4j-app
+  template:
+    metadata:
+      labels:
+        app: cf4j-app
+    spec:
+      containers:
+        - name: cf4j-app
+          image: dionisioc/cf4japp:0.0.1-SNAPSHOT
+          ports:
+            - name: cf4j-app-web
+              containerPort: 8080
+              protocol: TCP
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: cf4j-app
+  labels:
+    app: cf4j-app
+spec:
+  ports:
+    - port: 8080
+      targetPort: cf4j-app-web
+      protocol: TCP
+      name: cf4j-app-web
+  selector:
+    app: cf4j-app
+  type: LoadBalancer
