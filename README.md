@@ -1,6 +1,6 @@
 # cf4jApp
 
-This is a springboot 2.5.6 app with java 17 that uses [cf4j](https://github.com/ferortega/cf4j) library
+This is a springboot 2.6.1 app with java 17 that uses [cf4j](https://github.com/ferortega/cf4j) library
 
 ## Sync the original fork 
 
