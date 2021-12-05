@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-locust-master
+  labels:
+    name: {{ .Release.Name }}-locust-master
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-locust-master
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-locust-master
+    spec:
+      containers:
+        - name: {{ .Release.Name }}-locust-master
+          image: {{ .Values.images.locust.image }}:{{.Values.images.locust.tag }}
+          env:
+            - name: LOCUST_MODE
+              value: {{.Values.locust.mode.master }}
+            - name: TARGET_HOST
+              value: http://34.72.0.173:8080
+          ports:
+            - name: {{.Values.service.locust.web.name }}
+              containerPort: {{.Values.service.locust.web.port }}
+              protocol: {{.Values.service.locust.web.protocol }}
+            - name: {{.Values.service.locust.port1.name }}
+              containerPort: {{.Values.service.locust.port1.port }}
+              protocol: {{.Values.service.locust.port1.protocol }}
+            - name: {{.Values.service.locust.port2.name }}
+              containerPort: {{.Values.service.locust.port2.port }}
+              protocol: {{.Values.service.locust.port2.protocol }}

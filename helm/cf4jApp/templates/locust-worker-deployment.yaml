@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-locust-worker
+  labels:
+    name: {{ .Release.Name }}-locust-worker
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-locust-worker
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-locust-worker
+    spec:
+      containers:
+        - name: {{ .Release.Name }}-locust-worker
+          image: {{ .Values.images.locust.image }}:{{.Values.images.locust.tag }}
+          env:
+            - name: LOCUST_MODE
+              value: {{.Values.locust.mode.worker }}
+            - name: LOCUST_MASTER
+              value: {{ .Release.Name }}-locust-master
+            - name: TARGET_HOST
+              value: http://34.72.0.173:8080

@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-cf4j-app
+  labels:
+    name: {{ .Release.Name }}-cf4j-app
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-cf4j-app
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-cf4j-app
+    spec:
+      containers:
+        - name: {{ .Release.Name }}-cf4j-app
+          image: {{.Values.images.cf4j.image }}:{{.Values.images.cf4j.tag }}
+          ports:
+            - name: {{.Values.service.cf4j.web.name }}
+              containerPort: {{.Values.service.cf4j.web.port }}
+              protocol: {{.Values.service.cf4j.web.protocol }}

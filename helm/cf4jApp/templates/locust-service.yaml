@@ -1,0 +1,23 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Release.Name }}-locust-master
+  labels:
+    app: {{ .Release.Name }}-locust-master
+spec:
+  ports:
+    - name: {{.Values.service.locust.web.name }}
+      targetPort: {{.Values.service.locust.web.name }}
+      port: {{.Values.service.locust.web.port }}
+      protocol: {{.Values.service.locust.web.protocol }}
+    - name: {{.Values.service.locust.port1.name }}
+      targetPort: {{.Values.service.locust.port1.name }}
+      port: {{.Values.service.locust.port1.port }}
+      protocol: {{.Values.service.locust.port1.protocol }}
+    - name: {{.Values.service.locust.port2.name }}
+      targetPort: {{.Values.service.locust.port2.name }}
+      port: {{.Values.service.locust.port2.port }}
+      protocol: {{.Values.service.locust.port2.protocol }}
+  selector:
+    app: {{ .Release.Name }}-locust-master
+  type: LoadBalancer

@@ -1,0 +1,42 @@
+---
+replicaCount: 1
+
+service:
+  locust:
+    web:
+      name: locust-mast-web
+      type: NodePort
+      port: 8089
+      protocol: TCP
+    port1:
+      name: locust-mast-p1
+      type: NodePort
+      port: 5557
+      protocol: TCP
+    port2:
+      name: locust-mast-p2
+      type: NodePort
+      port: 5558
+      protocol: TCP
+  cf4j:
+    web:
+      name: cf4j-app-web
+      type: NodePort
+      port: 8080
+      protocol: TCP
+
+images:
+  locust:
+    image: gcr.io/tfmurjc-331614/locust-tasks
+    tag: latest
+    pullPolicy: Always
+  cf4j:
+    image: dionisioc/cf4japp
+    tag: 0.0.1-SNAPSHOT
+    pullPolicy: Always
+
+locust:
+  mode:
+    master: master
+    worker: worker
+  master-node:

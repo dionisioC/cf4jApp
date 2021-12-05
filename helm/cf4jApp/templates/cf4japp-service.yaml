@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Release.Name }}-cf4j-app-service
+  labels:
+    app: {{ .Release.Name }}-cf4j-app
+spec:
+  ports:
+    - port: {{.Values.service.cf4j.web.port }}
+      targetPort: {{.Values.service.cf4j.web.name }}
+      protocol: {{.Values.service.cf4j.web.protocol }}
+      name: {{.Values.service.cf4j.web.name }}
+  selector:
+    app: {{ .Release.Name }}-cf4j-app
+  type: LoadBalancer
