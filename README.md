@@ -1,8 +1,22 @@
-# cf4jApp
+# Análisis, mejora del código y pruebas de la librería CF4J: Collaborative Filtering for Java
 
-This is a springboot 2.6.1 app with java 17 that uses [cf4j](https://github.com/ferortega/cf4j) library
+![Master Cloud apps ](./imgs/masterCloudApps.png)
+
+This repository has all the work done for the master final thesis of
+"[Máster Cloud Apps. Desarrollo y despliegue de aplicaciones en la nube](https://www.codeurjc.es/mastercloudapps/)" of the Rey Juan Carlos university.
+
+This final project has two main parts. One consists in the analysis and improvement of the [cf4j](https://github.com/ferortega/cf4j) library which is forked [here](https://github.com/dionisioC/cf4j).
+The second part consist in the development of an app that wraps the library with a rest API in order to do some performance tests locally and in the cloud. 
+
+The improvement has done using sonarQube to see the status of the project and mutation testing techniques to check the strength of the tests.
+
+The app is a springboot 2.6.1 app with java 17 that uses [cf4j](https://github.com/ferortega/cf4j) library. To deploy the app there are [kubernetes files](./k8s) and a [helm chart](./helm/cf4jApp).
+
+The load testing is done with Jmeter locally and with locust in the cloud. [Here](./src/main/resources/application.properties) is the Jmeter file and [here](./locust-image) is the locust image.
 
 ## Sync the original fork 
+
+As the first part is not a greenfield project, we need to sync the forks. In order to do that
 
 Check the remotes.
 
@@ -72,6 +86,29 @@ Auto-merging pom.xml
 Automatic merge failed; fix conflicts and then commit the result.
 ```
 
+## Mutation testing
+
+After adding the needed dependencies into the original pom to perform mutation testing, we can run it with:
+
+```bash
+mvn clean test org.pitest:pitest-maven:mutationCoverage
+```
+
+## Local load testing
+
+With the app running we execute jmeter as follows
+
+```bash
+jmeter -n -t src/main/resources/Matrix\ factorization.jmx -l results/result.csv -e -o results
+```
+
+If the report is not generated, we can do it manually
+
+```bash
+jmeter -g results/result.csv -o results/report
+```
+
+
 ## Create the Google cloud cluster
 
 First we initialize the gcloud app
@@ -108,4 +145,36 @@ We add the locust image to the Google registry:
 
 ```bash
 gcloud builds submit --tag gcr.io/tfmurjc-331614/locust-tasks:latest locust-image
+```
+
+With all this we have the cluster up and running, now we have to deploy the apps.
+
+## Deploy kubernetes files
+
+Inside the [kubernetes folder](./k8s) we perform:
+
+```bash
+kubectl apply -f cf4japp.yaml
+kubectl apply -f locust-master.yaml
+kubectl apply -f locust-worker.yaml
+```
+
+## Deploy with helm
+
+Inside the [helm chart folder](./helm/cf4jApp) we perform:
+
+```bash
+helm install v1 .
+```
+
+To uninstall:
+
+```bash
+helm uninstall v1 .
+```
+
+To upgrade:
+
+```bash
+helm upgrade v1 .
 ```
